@@ -1,9 +1,9 @@
 window.onload = ()=> {
     const width = 900;
-    const height = 600;
+    const height = 510;
     const size = 30;
     let ctx;
-    let color = 0;
+    let round = 1;
     let draw = false;
     let Points = [];
     let score1 = 0;
@@ -22,12 +22,12 @@ window.onload = ()=> {
     const drawPoint = (i, j)=> {
         if (Points[i][j][0]===null) {
             ctx.beginPath();
-            Points[i][j][0] = color%2===0 ? 1 : 2;
-            ctx.strokeStyle = color%2===0 ? "red" : "blue";
-            ctx.arc(j*size, i*size, 4, 0,Math.PI*2, true);
+            Points[i][j][0] = round===1 ? 1 : -1;
+            ctx.strokeStyle = round===1 ? "red" : "blue";
+            ctx.arc(j*size, i*size, 5, 0,Math.PI*2, true);
             ctx.fill();
             ctx.stroke();
-            color++;
+            round*=-1;
         }
     }
     const Matrice = ()=> {
@@ -106,7 +106,7 @@ window.onload = ()=> {
                 const sc = document.getElementById(id);
                 sc.textContent = Points[i][j][0]===1 ? score1 : score2;
                 if (xDraw || yDraw || (D && kD===5) || (DI && kDI===5)) {
-                    color--;
+                    round*=-1;
                     draw = true;
                 }
             }
@@ -114,8 +114,8 @@ window.onload = ()=> {
     }
     const rounds = ()=> {  
         const Jouer = document.getElementById('Jouer');
-        Jouer.style.color = color%2===0? "red" : "blue";
-        const rd = color%2===0? "J1" : "J2";
+        Jouer.style.color = round===1? "red" : "blue";
+        const rd = round===1? "J1" : "J2";
         Jouer.textContent = rd;
     }
     const init = ()=> {
@@ -124,9 +124,6 @@ window.onload = ()=> {
         const div = document.createElement('div');
         document.body.appendChild(div);
         div.style.float = "left";
-        const score = document.createElement('h3');
-        score.textContent = "Score";
-        div.appendChild(score);
         const sc1 = document.createElement('p');
         sc1.style.color = "grey";
         sc1.textContent = "Jouer 1 : ";
@@ -147,6 +144,7 @@ window.onload = ()=> {
         sc2.appendChild(sp2);
         const round = document.createElement('h3');
         round.id = "round";
+        round.style.color = "Orange";
         round.textContent = "Tour : ";
         div.appendChild(round);
         const jouer = document.createElement('span');
@@ -169,7 +167,7 @@ window.onload = ()=> {
         document.body.appendChild(canvas);
         drawLines();
         canvas.onclick = (e)=> {
-            const widthResp = parseInt((window.screen.width-width)/2-(window.screen.width/size-70));
+            const widthResp = parseInt(width+(size+5) - window.screen.width/2);
             const cursorX = parseInt((e.clientX-widthResp)/size);
             const cursorY = parseInt(e.clientY/size);
             drawPoint(cursorY, cursorX);
