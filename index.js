@@ -69,7 +69,6 @@ window.onload = ()=> {
                 ctx.strokeStyle = Points[i][j][0]===1 ? "red" : "blue";
                 if (xDraw) {
                     draw = true;
-                    Points[i][j][0]===1 ? score1++ : score2++;
                     ctx.moveTo(j*size, i*size);
                     ctx.lineTo((kX-1)*size, i*size);
                     for (let k=j; k<(j+5); k++) {
@@ -77,7 +76,6 @@ window.onload = ()=> {
                     }
                 }
                 if (yDraw) {
-                    Points[i][j][0]===1 ? score1++ : score2++;
                     ctx.moveTo(j*size, i*size);
                     ctx.lineTo(j*size, (kY-1)*size);
                     for (let k=i; k<(i+5); k++) {
@@ -85,7 +83,6 @@ window.onload = ()=> {
                     }
                 }
                 if (D && kD===5) {
-                    Points[i][j][0]===1 ? score1++ : score2++;
                     ctx.moveTo(j*size, i*size);
                     ctx.lineTo((j+4)*size, (i+4)*size);
                     for (let k=0; k<5; k++) {
@@ -93,7 +90,6 @@ window.onload = ()=> {
                     }
                 }
                 if (DI && kDI===5) {
-                    Points[i][j][0]===1 ? score2++ : score1++;
                     ctx.strokeStyle = Points[i][(j+4)][0]===1 ? "red" : "blue";
                     ctx.moveTo(j*size, (i+4)*size);
                     ctx.lineTo((j+4)*size, i*size);
@@ -102,12 +98,15 @@ window.onload = ()=> {
                     }
                 }
                 ctx.stroke();
-                const id = Points[i][j][0]===1 ? "j1" : "j2";
-                const sc = document.getElementById(id);
-                sc.textContent = Points[i][j][0]===1 ? score1 : score2;
                 if (xDraw || yDraw || (D && kD===5) || (DI && kDI===5)) {
                     round*=-1;
                     draw = true;
+                    if (round===1) score1++;
+                    else score2++;
+                    const sc1 = document.getElementById("j1");
+                    const sc2 = document.getElementById("j2");
+                    sc1.textContent = score1;
+                    sc2.textContent = score2;
                 }
             }
         }
