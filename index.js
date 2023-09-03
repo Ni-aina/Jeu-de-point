@@ -1,6 +1,6 @@
 window.onload = ()=> {
-    const width = 900;
-    const height = 510;
+    const width = window.screen.width - 25;
+    const height = window.screen.height - Math.floor(window.screen.height/3);
     const size = 30;
     let ctx;
     let round = 1;
@@ -103,8 +103,8 @@ window.onload = ()=> {
                     draw = true;
                     if (round===1) score1++;
                     else score2++;
-                    const sc1 = document.getElementById("j1");
-                    const sc2 = document.getElementById("j2");
+                    const sc1 = document.getElementById("P1");
+                    const sc2 = document.getElementById("P2");
                     sc1.textContent = score1;
                     sc2.textContent = score2;
                 }
@@ -112,63 +112,67 @@ window.onload = ()=> {
         }
     }
     const rounds = ()=> {  
-        const Jouer = document.getElementById('Jouer');
-        Jouer.style.color = round===1? "red" : "blue";
-        const rd = round===1? "J1" : "J2";
-        Jouer.textContent = rd;
+        const Player = document.getElementById('Player');
+        Player.style.color = round===1? "red" : "blue";
+        const rd = round===1? "P1" : "P2";
+        Player.textContent = rd;
     }
     const init = ()=> {
         Matrice();
         const canvas = document.createElement('canvas');
         const div = document.createElement('div');
         document.body.appendChild(div);
-        div.style.float = "left";
+        div.style.position = "fixed";
+        div.style.bottom = "10px";
+        div.style.display = "grid";
+        div.style.gridTemplateColumns = "1fr 1fr 1fr";
+        div.style.alignItems = "center";
+        div.style.gap = "20px";
         const sc1 = document.createElement('p');
         sc1.style.color = "grey";
-        sc1.textContent = "Jouer 1 : ";
+        const round = document.createElement('h3');
+        round.id = "round";
+        round.style.color = "Orange";
+        round.textContent = "Round : ";
+        div.appendChild(round);
+        sc1.textContent = "Player one : ";
         div.appendChild(sc1);
         const sp1 = document.createElement('span');
-        sp1.id = "j1";
+        sp1.id = "P1";
         sp1.style.color = "red";
         sp1.textContent = score1;
         sc1.appendChild(sp1);
         const sc2 = document.createElement('p');
         sc2.style.color = "grey";
-        sc2.textContent = "Jouer 2 : ";
+        sc2.textContent = "Player two : ";
         div.appendChild(sc2);
         const sp2 = document.createElement('span');
-        sp2.id = "j2";
+        sp2.id = "P2";
         sp2.style.color = "blue";
         sp2.textContent = score2;
         sc2.appendChild(sp2);
-        const round = document.createElement('h3');
-        round.id = "round";
-        round.style.color = "Orange";
-        round.textContent = "Tour : ";
-        div.appendChild(round);
-        const jouer = document.createElement('span');
-        jouer.id = "Jouer";
-        jouer.style.padding = "0px 3px";
-        jouer.style.border = "1px solid grey";
-        jouer.style.borderRadius = "2px";
-        jouer.style.color = "red";
-        jouer.style.fontSize = "17px";
-        jouer.style.fontWeight = "bold";
-        jouer.textContent = "J1";
-        round.appendChild(jouer);
+        const Player = document.createElement('span');
+        Player.id = "Player";
+        Player.style.padding = "0px 3px";
+        Player.style.border = "1px solid grey";
+        Player.style.borderRadius = "2px";
+        Player.style.color = "red";
+        Player.style.fontSize = "17px";
+        Player.style.fontWeight = "bold";
+        Player.textContent = "P1";
+        round.appendChild(Player);
         canvas.width = width;
         canvas.height = height;
         canvas.style.border = "2px solid grey";
         canvas.style.borderRadius = "3px";
         canvas.style.display = "block";
-        canvas.style.margin = "15px auto";
+        canvas.style.margin = "0";
         ctx = canvas.getContext('2d');
         document.body.appendChild(canvas);
         drawLines();
         canvas.onclick = (e)=> {
-            const widthResp = parseInt(width+(size+10) - window.screen.width/2);
-            const cursorX = parseInt((e.clientX-widthResp)/size);
-            const cursorY = parseInt(e.clientY/size);
+            const cursorX = Math.floor(e.clientX/size);
+            const cursorY = Math.floor(e.clientY/size);
             drawPoint(cursorY, cursorX);
             Lines();
             if (draw)
